@@ -6,9 +6,9 @@ const PORT = process.env.PORT || "localhost";
 app.use(express.static("public"));
 app.use(express.json())
 const { v4: uuidv4 } = require("uuid");
-
+var nodemailer = require("nodemailer")
 const mongoose = require("mongoose");
-let MONGO_URI = "mongodb+srv://amathakbari:24l63AQs7kQ8D3hX@my-db.m8xjh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+let MONGO_URI = "mongodb+srv://amathakbari:24l63AQs7kQ8D3hX@my-db.m8xjh.mongodb.net/Shower_thoughts?retryWrites=true&w=majority";
 mongoose.connect(MONGO_URI);
 let db = mongoose.connection;
 const kittySchema = new mongoose.Schema();
@@ -43,11 +43,22 @@ app.get("/", (req, res) => {
     res.sendFile(__dirname + "/public/index.html")
 });
 
+app.get("/link/:code", (req, res) => {
+  credentials.findOne({code: req.params.code}, (err, doc) => {
+    if (doc == null){
+      res.send(404)
+    } else {
+      credentials.updateOne({code: req.params.code}, {$unset: {description: 1}})
+      console.log(doc)
+    }
+  })
+})
+
 app.get("/create", (req, res) => {
     res.sendFile(__dirname + "/public/create.html")
 })
 
-server.listen(3000, PORT, () => {
+server.listen(3000, () => {
     console.log("Server Started")
 })
 
@@ -68,7 +79,13 @@ app.post("/loadposts", (req, res) => {
 
 app.post("/send_email", (req, res) => {
     let email = req.body.email;
-    let password = req.body.password;
+    let password = req.body.password
     let code = uuidv4();
-    send_an_email(email, "ShowerThoughts Email confirmation Link", `Hello! Click on this link to verify your email: https://localhost:3000/link/${code}`)
+    send_an_email(email, "ShowerThoughts Email confirmation Link", `Hello! Click on this link to verify your email: https://github.aboutabot.repl.co/link/${code}`);
+    const data = {
+      email: email,
+      password: password,
+      code: code
+    };
+  credentials.insertOne(data)
 })

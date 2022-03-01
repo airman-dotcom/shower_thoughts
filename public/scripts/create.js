@@ -16,12 +16,13 @@ document.getElementById("submit").onclick = function(){
                 email: document.getElementById("email").value,
                 password: document.getElementById("psw").value
             };
+          alert(JSON.stringify(data))
             const send_data = {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application.json"
+                    "Content-Type": "application/json"
                 },
-                body: JSON.stringify(data)
+                body:JSON.stringify(data)
             };
             fetch("/send_email", send_data)
         } else {
