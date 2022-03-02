@@ -19,7 +19,7 @@ function send_an_email(receiver, title, body){
         service: 'gmail',
         auth: {
           user: 'amathakbari@gmail.com',
-          pass: 'Sahra253!'
+          pass: 'ArmanMath!'
         }
       });
       
@@ -48,8 +48,13 @@ app.get("/link/:code", (req, res) => {
     if (doc == null){
       res.send(404)
     } else {
-      credentials.updateOne({code: req.params.code}, {$unset: {description: 1}})
-      console.log(doc)
+      credentials.updateOne({code: req.params.code}, {$unset: {description: 1}}, (err, doc) => {
+          if (err){
+              console.log(err)
+          }
+          console.log(doc)
+      })
+      
     }
   })
 })
@@ -58,7 +63,7 @@ app.get("/create", (req, res) => {
     res.sendFile(__dirname + "/public/create.html")
 })
 
-server.listen(3000, () => {
+server.listen(3000, PORT, () => {
     console.log("Server Started")
 })
 
