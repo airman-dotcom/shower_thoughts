@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not found</title>
+</head>
+<body>
+    Sorry this is the wrong page that you're looking for.
+</body>
+<script>
+    document.body.onload = function(){
+        if (window.location.pathname == "/404.html"){
+            alert("Stop cheating on the 404 page!");
+            window.location.href = "/"
+        }
+    }
+</script>
+</html>
